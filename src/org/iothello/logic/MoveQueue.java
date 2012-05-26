@@ -19,7 +19,7 @@ public class MoveQueue {
     private static final Condition noMoveCon = lock.newCondition();
     private static GameFrame frame;
 
-    public Point getMove(List moves) throws InterruptedException {
+    public Point getMove(List<Point> moves) throws InterruptedException {
         while (true) {
             lock.lock();
             try {

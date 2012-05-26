@@ -35,7 +35,7 @@ public class Computer_1 extends Player {
             {-1, -10, 1, 1, 1, 1, -10, -1},
             {50, -1, 5, 2, 2, 5, -1, 50},};
 
-        List validMoves = grid.getValidMoves(this.getID());
+        List<Point> validMoves = grid.getValidMoves(this.getID());
         int currBest = -100, cbX = 0, cbY = 0;
         for (int i = 0; i < validMoves.size(); i++) {
             Point move1 = (Point) validMoves.get(i);

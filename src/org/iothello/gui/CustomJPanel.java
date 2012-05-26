@@ -1,7 +1,6 @@
 package org.iothello.gui;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
@@ -14,7 +13,8 @@ import javax.swing.JPanel;
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class CustomJPanel extends JPanel {
-    private Image PanelBackground;
+	private static final long serialVersionUID = -158123242409744287L;
+	private Image PanelBackground;
     
 	public CustomJPanel(String file) {
 	    PanelBackground = (new ImageIcon(file).getImage());

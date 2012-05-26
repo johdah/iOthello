@@ -36,7 +36,6 @@ public class GameBoard extends JPanel {
     private MoveQueue mq = new MoveQueue();
     public int hoover_i=-1, hoover_j=-1;
     
-    
     public GameBoard() {
         BoardBackground = (new ImageIcon("gfx/themes/" + theme + "/board.jpg").getImage());
         setTheme();
@@ -90,9 +89,6 @@ public class GameBoard extends JPanel {
                     marker.setValue(3);
                 }
                 
-
-                
-                
                 marker.addMouseListener(marker);
                 this.add(marker);
             }
@@ -104,10 +100,9 @@ public class GameBoard extends JPanel {
         GameBoard.player = player;
         this.removeAll();
         int grid[][] = gamegrid.getGameGrid();
+        
         for (int i = 0; i < 8; i++) {
-            
             for (int j = 0; j < 8; j++) {
-
                 MarkerEdit marker = new MarkerEdit(this, gamegrid);
                 marker.setPos(j, i);
                 marker.setValue(grid[j][i]);
@@ -130,7 +125,6 @@ public class GameBoard extends JPanel {
                 this.add(marker);
             }
         }
-        
     }
     
     public void changeTheme(String theme) {

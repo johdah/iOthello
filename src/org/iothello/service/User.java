@@ -9,10 +9,11 @@ import java.util.List;
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class User implements Serializable {
-    private String name;
+	private static final long serialVersionUID = 2430471622661962697L;
+	private String name;
     private String IP;
     private int port;
-    private List<String> privatechat = new ArrayList();
+    private List<String> privatechat = new ArrayList<String>();
     private User challenger = null;
     private int playerStatus = 0;
 
@@ -60,8 +61,8 @@ public class User implements Serializable {
         privatechat.add(from + ": " + mess);
     }
 
-    public List getMessSince(int since) {
-        List returnlist = new ArrayList();
+    public List<String> getMessSince(int since) {
+        List<String> returnlist = new ArrayList<String>();
         for (int i = since; i < privatechat.size(); i++) {
             returnlist.add(privatechat.get(i));
         }

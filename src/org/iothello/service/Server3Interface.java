@@ -14,7 +14,7 @@ public interface Server3Interface extends Remote {
 
     public boolean createUser(String name, String password) throws RemoteException;
 
-    public List getUserlist() throws RemoteException;
+    public List<User> getUserlist() throws RemoteException;
 
     public String sendPublicMessage(String message) throws RemoteException;
 
@@ -22,9 +22,9 @@ public interface Server3Interface extends Remote {
 
     public void clearPrivateMessages(String user) throws RemoteException;
 
-    public List getPublicChatMessagesSince(int messId) throws RemoteException;
+    public List<String> getPublicChatMessagesSince(int messId) throws RemoteException;
 
-    public List getPrivateChatMessagesSince(String user, int messId) throws RemoteException;
+    public List<String> getPrivateChatMessagesSince(String user, int messId) throws RemoteException;
 
     public void upDateScores(String player1, String player2, int p1points, int p2points) throws RemoteException;
 

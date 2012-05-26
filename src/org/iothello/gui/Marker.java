@@ -12,6 +12,7 @@ import javax.swing.JLabel;
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class Marker extends JLabel implements MouseListener {
+	private static final long serialVersionUID = -3826593595197073273L;
 	protected Point pos;
     protected ImageIcon temp;
     protected int value = 0;

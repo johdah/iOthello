@@ -9,8 +9,9 @@ import java.util.ArrayList;
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class HighscoreViewer extends JDialog {
+	private static final long serialVersionUID = -8419190819861670870L;
 
-    /** Creates new form highscoreViewer */
+	/** Creates new form highscoreViewer */
     public HighscoreViewer(java.awt.Frame parent, boolean modal, ArrayList highscore, ArrayList ranking) {
         super(parent, modal);
         initComponents();
@@ -19,9 +20,7 @@ public class HighscoreViewer extends JDialog {
         this.setLocationRelativeTo(null);
     }
 
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-
         jtpHighScore = new javax.swing.JTabbedPane();
         jspScrollHighscore = new javax.swing.JScrollPane();
         jtHighscore = new javax.swing.JTable();
@@ -173,12 +172,12 @@ public class HighscoreViewer extends JDialog {
         );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void jbtCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtCloseActionPerformed
+    private void jbtCloseActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
-    }//GEN-LAST:event_jbtCloseActionPerformed
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    }
+    // Variables declaration - do not modify
     private javax.swing.JButton jbtClose;
     private javax.swing.JLabel jlHighscores;
     private javax.swing.JScrollPane jspScrollHighscore;
@@ -186,7 +185,7 @@ public class HighscoreViewer extends JDialog {
     private javax.swing.JTable jtHighscore;
     private javax.swing.JTable jtPlayerRanking;
     private javax.swing.JTabbedPane jtpHighScore;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration
     private int x, y = 0;
 
     // Takes in a arraylist that holds a copy of the top highscores from the

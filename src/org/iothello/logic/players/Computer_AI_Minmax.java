@@ -56,8 +56,7 @@ public class Computer_AI_Minmax extends Player {
 	    if(this.isDebug()){
 	        int tot = this.searchedNodesTot;
 	        this.setRunAlphaTest(false);
-	        Point temp = null;
-	        temp = minmax_Decision_(gamegrid);
+	        //temp = minmax_Decision_(gamegrid);
 	        this.setRunAlphaTest(true);            
 	        this.searchedNodesTot = tot;
 	    }
@@ -82,7 +81,7 @@ public class Computer_AI_Minmax extends Player {
 	    }
 	    
 	    // Get all valid moves
-	    List lofMoves = gamegrid.getValidMoves(this.getID());
+	    List<Point> lofMoves = gamegrid.getValidMoves(this.getID());
 	    
 	    // Loop through all possible grids
 	    for(int i = 0; i < lofMoves.size(); i++){
@@ -125,7 +124,7 @@ public class Computer_AI_Minmax extends Player {
 	 * @return double maxvalue
 	 */
 	private double maxValue(GameGrid gamegrid, int currentdepth, Double alpha, Double beta){
-	    int currentID;
+	    //int currentID;
 	    currentdepth++;
 	    this.searchedNodesFM++;
 	    double value = Double.NEGATIVE_INFINITY;
@@ -134,7 +133,7 @@ public class Computer_AI_Minmax extends Player {
 	        return getUtilityValue(gamegrid);
 	    }
 	        
-	    List lofMoves = gamegrid.getValidMoves(this.getID());
+	    List<Point> lofMoves = gamegrid.getValidMoves(this.getID());
 	    
 	    // Generates all possible grids. 
 	    for(int i =0; i<lofMoves.size(); i++){
@@ -183,7 +182,7 @@ public class Computer_AI_Minmax extends Player {
 	    else
 	        currentID = GameGrid.WHITE_MARKER;
 	
-	    List lofMoves = gamegrid.getValidMoves(currentID);
+	    List<Point> lofMoves = gamegrid.getValidMoves(currentID);
 	    
 	    // Generates all possible grids. 
 	
@@ -246,7 +245,7 @@ public class Computer_AI_Minmax extends Player {
 	 * @return int mobility value
 	 */
 	public int getUtilityValueMobility(GameGrid grid) {
-	    List lofMoves = null;
+	    List<Point> lofMoves = null;
 	    
 	    if(getID() == GameGrid.WHITE_MARKER) {
 	        lofMoves = grid.getValidMoves(GameGrid.BLACK_MARKER);

@@ -3,8 +3,6 @@ package org.iothello.logic;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A class that keeps track of the current state of the game. The rules are
@@ -28,7 +26,7 @@ public class GameGrid {
     private int blackMarkers; 
     private int whiteMarkers;
     private int [][] board = new int[GRID_ROWS][GRID_COLUMNS];
-    private List <Vector2D> validMoves = new ArrayList();
+    private List<Vector2D> validMoves = new ArrayList<Vector2D>();
     private int blackPoints;
     private int whitePoints;
 
@@ -75,7 +73,7 @@ public class GameGrid {
         return board;
     }
     
-    public List getValidMoves(int playerColor){
+    public List<Point> getValidMoves(int playerColor){
         //Remove all previous valid moves
         validMoves.clear();
         
@@ -96,7 +94,7 @@ public class GameGrid {
      */
     public void updateGrid(int x, int y, int color){
         Vector2D pos = new Vector2D(x,y);
-        List<Vector2D> updateList = new ArrayList();
+        List<Vector2D> updateList = new ArrayList<Vector2D>();
         
         
         updateList = calcValidMove(pos,color,DIRECTIONS);
@@ -118,8 +116,8 @@ public class GameGrid {
      * Returns a list of either all possible valid moves, or
      *  all directions that produce a valid move(used by the switchColor method).
      */
-    public List calcValidMove(Vector2D pos, int playerColor, int returnType){
-        List <Vector2D> moves = new ArrayList();
+    public List<Vector2D> calcValidMove(Vector2D pos, int playerColor, int returnType){
+        List<Vector2D> moves = new ArrayList<Vector2D>();
         Vector2D direction = new Vector2D();
         Vector2D searchPos = new Vector2D();
         
@@ -207,19 +205,24 @@ public class GameGrid {
         return whitePoints;
     }
     
-    //tillagt av björn, en vector2d lista -> points
-    private List vector2DToPoints(List inlist) {
-        List outList = new ArrayList();
+    /**
+     * List<Vector2D> to List<Points>
+     * 
+     * @param inlist
+     * @return outList
+     */
+    private List<Point> vector2DToPoints(List<Vector2D> inlist) {
+        List<Point> points = new ArrayList<Point>();
         Vector2D temp = new Vector2D();
         Point point;
 
         while (!inlist.isEmpty()) {
             temp = (Vector2D) inlist.remove(0);
             point = new Point(temp.getX(), temp.getY());
-            outList.add(point);
+            points.add(point);
         }
         
-        return outList;
+        return points;
     }
 
     public void setGrid(int[][] spargrid) {

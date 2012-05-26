@@ -19,7 +19,6 @@ import javax.swing.JTextField;
 import org.iothello.gui.CustomJPanel;
 import org.iothello.logic.players.Computer_AI_Minmax;
 import org.iothello.logic.players.Computer;
-import org.iothello.logic.players.Computer_1;
 import org.iothello.logic.players.Computer_MonteCarlo;
 import org.iothello.logic.GameGrid;
 import org.iothello.logic.players.Human;
@@ -31,13 +30,14 @@ import org.iothello.logic.players.Player;
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class SetupGameDialog extends JDialog implements ActionListener {
-    private int compSpeed = 0;
+	private static final long serialVersionUID = -7749933146161564166L;
+	private int compSpeed = 0;
     private int times = 10;
     private Player player1;
     private Player player2;
     private String[] petStrings = {"Human", "Computer(random)","AI Easy(2)", "AI Medium(4)", "AI Hard(6)", "AI Extreme(8)", "AI Monte Carlo"};
-    private JComboBox jcmPlayer1 = new JComboBox(petStrings);
-    private JComboBox jcmPlayer2 = new JComboBox(petStrings);
+    private JComboBox<?> jcmPlayer1 = new JComboBox(petStrings);
+    private JComboBox<?> jcmPlayer2 = new JComboBox(petStrings);
     private JTextField jtxName1 = new JTextField("Player 1");
     private JTextField jtxName2 = new JTextField("Player 2");
     private boolean testMode = false;

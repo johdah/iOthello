@@ -19,8 +19,9 @@ import org.iothello.logic.players.Player;
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class WinnerDialog extends JDialog implements ActionListener {
+	private static final long serialVersionUID = 317964133027806835L;
 
-    public WinnerDialog(JFrame owner, Player player) {
+	public WinnerDialog(JFrame owner, Player player) {
         super(owner, true);
         String winnerName = player.getName();
         CustomJPanel setupPanel = new CustomJPanel("gfx/winner.jpg");

@@ -3,15 +3,13 @@ package org.iothello.gui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -29,7 +27,6 @@ import org.iothello.gui.dialogs.HelperDialog;
 import org.iothello.gui.dialogs.WinnerDialog;
 import org.iothello.logic.GameGrid;
 import org.iothello.logic.MoveQueue;
-import org.iothello.logic.Othello;
 import org.iothello.logic.players.Player;
 
 /**
@@ -38,8 +35,9 @@ import org.iothello.logic.players.Player;
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class GameFrame extends JFrame {
+	private static final long serialVersionUID = -533543048838510024L;
 	private static GameBoard panel;
-    private static List validMoves;
+    private static List<Point> validMoves = null;
     private boolean showValid = false;
     private boolean edit = false;
     public int editPlayer = -1;
@@ -56,7 +54,7 @@ public class GameFrame extends JFrame {
     private OthelloMenuBar menubar = new OthelloMenuBar();
 
     public GameFrame() {
-        moveq.setFrame(this);//fixa?
+        moveq.setFrame(this);
         setTitle("Othello");
         setResizable(false);
         this.setIconImage((new ImageIcon("gfx/icon.png")).getImage());
@@ -85,7 +83,8 @@ public class GameFrame extends JFrame {
 
         setVisible(true);
         pack();
-//center frame 
+
+        //center frame 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int height = screenSize.height;
         int width = screenSize.width;
@@ -97,13 +96,10 @@ public class GameFrame extends JFrame {
         panel = new GameBoard();
     }
     
-    
     /*
      * Skickar vidare gamegrid till gameboard.
      */
-
     public void updateBoard(GameGrid gamegrid, int player) {
-
         this.player = player;
         this.gamegrid = gamegrid;
         GameFrame.validMoves = gamegrid.getValidMoves(player);
@@ -116,7 +112,7 @@ public class GameFrame extends JFrame {
         } 
         
         pack();
-/*
+        /*
             while(HelperDialog.getInstance().isStep() && !HelperDialog.getInstance().isNext()) {
                 try {
                     Thread.sleep(100);
@@ -127,11 +123,9 @@ public class GameFrame extends JFrame {
         */
     }
 
-    
     /*
      * Uppdaterar JLabels.
      */
-
     public void setFrameLabels(Player player1, Player player2, Player currentPlayer) {
         points.setText("<html>" + player1.getName() + ": " + player1.getPoints() + " <br>" + player2.getName() + ": " + player2.getPoints());
         if (currentPlayer.getID() == 1) {
@@ -141,10 +135,10 @@ public class GameFrame extends JFrame {
             playerTurn.setText("<html><h3> " + currentPlayer.getName() + "</h3> Color: White");
         }
     }
+    
     /*
      * Uppdaterar datorns "betänketid".
      */
-
     public void setSpeed(int speed) {
         compSpeed = speed;
        
@@ -155,15 +149,17 @@ public class GameFrame extends JFrame {
         return endGame;
 
     }
+    
     /*
      * Menubar.
      */
-
     class OthelloMenuBar extends JMenuBar {
+		private static final long serialVersionUID = 5195246075130274563L;
 
-        private void setSpeedCheck(boolean b) {
+		private void setSpeedCheck(boolean b) {
             speedCheckBox.setState(b);
         }
+		
         private JCheckBoxMenuItem speedCheckBox = new JCheckBoxMenuItem("Speedy computer");
 
         public OthelloMenuBar() {
@@ -228,7 +224,6 @@ public class GameFrame extends JFrame {
             }
 
         }
-
         
         class setEdit implements ActionListener {
             /*
@@ -267,7 +262,6 @@ public class GameFrame extends JFrame {
             /*
              * Slår på eller av funktionen att visa valid moves och sedan uppdaterars gameboard.
              */
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!showValid) {
@@ -281,7 +275,6 @@ public class GameFrame extends JFrame {
         }
 
         class changeCompSpeed implements ActionListener {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (compSpeed != 0) {
@@ -293,7 +286,6 @@ public class GameFrame extends JFrame {
         }
 
         class changeTheme implements ActionListener {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 panel.changeTheme(e.getActionCommand());
@@ -304,7 +296,6 @@ public class GameFrame extends JFrame {
     }
 
     class menuExit implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
@@ -312,17 +303,15 @@ public class GameFrame extends JFrame {
     }
 
     class menuNewGame implements ActionListener {
-//Sätter endGame boolen till true, samt släpper låset i MoveQueue ifall tråden står och väntar där.
+    	//Sätter endGame boolen till true, samt släpper låset i MoveQueue ifall tråden står och väntar där.
         @Override
         public void actionPerformed(ActionEvent e) {
             moveq.releaseLock();
             endGame = true;
-            
         }
     }
 
     class menuAbout implements ActionListener {
-
         @Override
         public void actionPerformed(ActionEvent e) {
             JOptionPane.showMessageDialog(null, "Laboration 2 OOPJ - Gameplay & AI\n\n   o Bjorn Dahlstrand\n   o Niclas Gustafsson\n   o Fredrik Tornvall\n\nLaboration 3 OOPJ - Network & Database\n\n   o Bjorn Dahlstrand\n   o Anders Hansson\n   o Pierre Odengard\n\n", "About Othello",
@@ -331,11 +320,11 @@ public class GameFrame extends JFrame {
     }
 
     public void showWinnerDialog(Player p) {
-        WinnerDialog wd = new WinnerDialog(this, p);
+        new WinnerDialog(this, p);
     }
 
     public void showDrawnDialog() {
-        DrawDialog dd = new DrawDialog(this);
+        new DrawDialog(this);
     }
 
     public void setEndGame(boolean end) {

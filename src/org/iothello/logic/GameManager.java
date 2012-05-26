@@ -29,7 +29,7 @@ public class GameManager {
         currentPlayer = playerTwo;
         GameGrid gamegrid = new GameGrid();
 
-        List validMoves;
+        List<Point> validMoves;
         //While som rullar på tills spelet är slut.
         while (true) {
             // I edit mode så ska vi bara uppdatera brädet
