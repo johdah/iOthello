@@ -20,6 +20,7 @@ import org.iothello.gui.CustomJPanel;
 import org.iothello.logic.players.Computer_AI_Minmax;
 import org.iothello.logic.players.Computer;
 import org.iothello.logic.players.Computer_1;
+import org.iothello.logic.players.Computer_MonteCarlo;
 import org.iothello.logic.GameGrid;
 import org.iothello.logic.players.Human;
 import org.iothello.logic.players.Player;
@@ -34,7 +35,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
     private int times = 10;
     private Player player1;
     private Player player2;
-    private String[] petStrings = {"Human", "Computer(random)","AI Easy(2)", "AI Medium(4)", "AI Hard(6)", "AI Extreme(8)"};
+    private String[] petStrings = {"Human", "Computer(random)","AI Easy(2)", "AI Medium(4)", "AI Hard(6)", "AI Extreme(8)", "AI Monte Carlo"};
     private JComboBox jcmPlayer1 = new JComboBox(petStrings);
     private JComboBox jcmPlayer2 = new JComboBox(petStrings);
     private JTextField jtxName1 = new JTextField("Player 1");
@@ -202,6 +203,15 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             player1.setName("P1 AI Extreme");
             player1.setID(GameGrid.BLACK_MARKER);
             p1comp = true;
+        } else if (jcmPlayer1.getSelectedIndex() == 6) {
+            player1 = new Computer_MonteCarlo();
+            player1.setName("P1 AI Monte Carlo");
+            player1.setID(GameGrid.BLACK_MARKER);
+            
+            // Activate debug if debug mode is selected
+            if(jchDebug.isSelected()) ((Computer_MonteCarlo) player1).setDebug(true);
+            
+            p1comp = true;
         }
         
         if (jcmPlayer2.getSelectedIndex() == 0) {
@@ -240,9 +250,18 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             player2.setName("P2 AI Extreme");
             player2.setID(GameGrid.WHITE_MARKER);
             p2comp = true;
+        } else if (jcmPlayer2.getSelectedIndex() == 6) {
+            player2 = new Computer_MonteCarlo();
+            player2.setName("P2 AI Monte Carlo");
+            player2.setID(GameGrid.WHITE_MARKER);
+            
+            // Activate debug if debug mode is selected
+            if(jchDebug.isSelected()) ((Computer_MonteCarlo) player2).setDebug(true);
+            
+            p2comp = true;
         }
         
-        if(p1comp){
+        if(p1comp && player1 instanceof Computer_AI_Minmax){
             Computer_AI_Minmax cmp1 = (Computer_AI_Minmax) player1;
             
             if(jchDebug.isSelected())
@@ -250,7 +269,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             
             player1 = cmp1;
         }
-        if(p2comp){
+        if(p2comp && player2 instanceof Computer_AI_Minmax){
             Computer_AI_Minmax cmp2 = (Computer_AI_Minmax) player2;
             
             if(jchDebug.isSelected())

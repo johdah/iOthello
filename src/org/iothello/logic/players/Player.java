@@ -14,7 +14,7 @@ abstract public class Player {
     private boolean validMoves = true, forfeit = false;
     private int points = 0;
 
-    abstract Point getMove(GameGrid gamegrid);
+    public abstract Point getMove(GameGrid gamegrid);
 
     public boolean forfeited() {
         return forfeit;

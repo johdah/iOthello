@@ -301,7 +301,7 @@ public class Computer_AI_Minmax extends Player {
 	 * @return Point
 	 */
 	@Override
-	Point getMove(GameGrid gamegrid) {
+	public Point getMove(GameGrid gamegrid) {
 	    try {
 	        Thread.sleep(GameFrame.getSpeed());
 	    } catch (InterruptedException ex) {

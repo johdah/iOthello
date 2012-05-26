@@ -13,7 +13,7 @@ import org.iothello.logic.GameGrid;
 public class Computer_1 extends Player {
 
     @Override
-    Point getMove(GameGrid gamegrid) {
+	public Point getMove(GameGrid gamegrid) {
           try {
             Thread.sleep(GameFrame.getSpeed());
         } catch (InterruptedException ex) {

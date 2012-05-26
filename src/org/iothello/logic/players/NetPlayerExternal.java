@@ -37,7 +37,7 @@ public class NetPlayerExternal extends Player {
 	    }
 	    
 	     @Override
-	    Point getMove(GameGrid gamegrid) {
+		public Point getMove(GameGrid gamegrid) {
 	        try {
 	            
 	            int x = in.readInt();
