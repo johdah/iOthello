@@ -1,37 +1,0 @@
-10
-
-dir
-58
-https://ai-othello.googlecode.com/svn/trunk/Client/gfx/themes
-https://ai-othello.googlecode.com/svn
-
-
-
-2012-03-21T14:55:18.247745Z
-20
-s102406@student.hb.se
-
-
-svn:special svn:externals svn:needs-lock
-
-
-
-
-
-
-
-
-
-
-
-ab2e2537-20e7-e97e-d3ea-e46e0bad0b7d
-
-Poker
-dir
-
-Ringar och kryss
-dir
-
-Standard
-dir
-
