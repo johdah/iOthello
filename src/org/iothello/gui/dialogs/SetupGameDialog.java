@@ -204,7 +204,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             player1.setID(GameGrid.BLACK_MARKER);
             p1comp = true;
         } else if (jcmPlayer1.getSelectedIndex() == 6) {
-            player1 = new Computer_MonteCarlo();
+            player1 = new Computer_MonteCarlo(1000);
             player1.setName("P1 AI Monte Carlo");
             player1.setID(GameGrid.BLACK_MARKER);
             
@@ -251,7 +251,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             player2.setID(GameGrid.WHITE_MARKER);
             p2comp = true;
         } else if (jcmPlayer2.getSelectedIndex() == 6) {
-            player2 = new Computer_MonteCarlo();
+            player2 = new Computer_MonteCarlo(1000);
             player2.setName("P2 AI Monte Carlo");
             player2.setID(GameGrid.WHITE_MARKER);
             

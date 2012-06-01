@@ -13,21 +13,23 @@ public class GameManager {
 	private Player playerOne; 
     private Player playerTwo;
     private Player currentPlayer;
+    private int turns = 0; // TODO: Should this exist?
 
-    public GameManager(Player playerOne, Player playerTwo) {
+	public GameManager(Player playerOne, Player playerTwo) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
     }
 
-    public int gameplay(GameFrame frame, boolean testMode) {
+    public int gameplay(GameFrame frame, GameGrid gamegrid, boolean testMode) {
         Point move = new Point();
+        // TODO: Should probably be created here
+        //GameGrid gamegrid = new GameGrid();
         
         if (!testMode) {
             frame.setEndGame(false); //återställer endgame
         }
 
         currentPlayer = playerTwo;
-        GameGrid gamegrid = new GameGrid();
 
         List<Point> validMoves;
         //While som rullar på tills spelet är slut.
@@ -143,8 +145,28 @@ public class GameManager {
                 
                 break;
             }
+            
+            setTurns(turns + 1);
         }
         
         return 3;
     }
+
+    /**
+     * Get turns
+     * 
+     * @return
+     */
+    public int getTurns() {
+		return turns;
+	}
+
+    /**
+     * Set turns
+     * 
+     * @param turns
+     */
+	public void setTurns(int turns) {
+		this.turns = turns;
+	}
 }

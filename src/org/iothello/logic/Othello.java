@@ -25,6 +25,7 @@ import org.iothello.logic.players.NetPlayerLocal;
  */
 public class Othello {
 	private GameFrame frame = new GameFrame();
+	private GameGrid grid = new GameGrid();
     private GameManager gm;
     private SetupGameDialog sgd = new SetupGameDialog(frame);
     private static boolean noGame = true;
@@ -38,10 +39,10 @@ public class Othello {
                 runGame();
             }
             if (sgd.getGameMode == 1) {
-                    runNetGame();
+                runNetGame();
             }
             if (sgd.getGameMode == 2) {
-                    runTest();
+                runTest();
             }
             //sgd.dispose();
             //sgd = new SetupGameDialog(frame);
@@ -77,7 +78,9 @@ public class Othello {
         int result;
         for (int i = 0; i < times; i++) {
             jprBar.setValue(i);
-            result = gm.gameplay(frame, true);
+            // TODO: Grid should probably be created in GameManager
+            //result = gm.gameplay(frame, true);
+            result = gm.gameplay(frame, grid, true);
             if (result == 1) {
                 p1++;
             }
@@ -97,7 +100,7 @@ public class Othello {
         gm = new GameManager(sgd.getPlayer1(), sgd.getPlayer2());
         frame.setSpeed(sgd.getCompSpeed());
         frame.toFront();
-        gm.gameplay(frame, false);
+        gm.gameplay(frame, grid, false);
         //sgd.setVisible(true);
     }
 
@@ -116,7 +119,7 @@ public class Othello {
 
         frame.toFront();
         gm = new GameManager(sgd.ll.getPlayer1(), sgd.ll.getPlayer2());
-        gm.gameplay(frame, false);
+        gm.gameplay(frame, grid, false);
 
         // Utmanaren rapporterar resultat till server via gamelobby
         // Om utmanaren disconnectat så rapporterar den utmanade

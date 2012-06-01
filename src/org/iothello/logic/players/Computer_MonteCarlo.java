@@ -1,65 +1,99 @@
 package org.iothello.logic.players;
 
 import java.awt.Point;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 import org.iothello.logic.GameGrid;
 
 /**
- * An AI that implements the Monte Carlo algorithm for reinforcement learning.
- * 
- * Monte Carlo is a method for making optimal decisions in artificial intelligence (AI) problems,
- *  typically move planning in combinatorial games. It combines the generality of random simulation 
- *  with the precision of tree search.
- *  
- * The basic MCTS algorithm is simple: a search tree is built, node by node, according to the 
- *  outcomes of simulated playouts. The process can be broken down into the following steps.
- * 1. Selection: Starting at root node R, recursively select optimal child nodes (explained below) until a leaf node L is reached.
- * 2. Expansion: If L is a not a terminal node (i.e. it does not end the game) then create one or more child nodes and select one C.
- * 3. Simulation: Run a simulated playout from C until a result is achieved.
- * 4. Backpropagation: Update the current move sequence with the simulation result.
+ * MCTSPlayer is an implementation of Player that makes moves using UCT (A Monte
+ * 	Carlo Tree Search that uses an Upper Confidence Bounds formula).
  * 
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class Computer_MonteCarlo extends Player {
+	public final int STATUS_ONGOING = 1, STATUS_PLAYER1WIN = 2, STATUS_DRAW = 3, STATUS_PLAYER2WIN = 4;
 	private boolean debug = false;
-	
-	static Random r = new Random();
-    static int nActions = 5;
-    static double epsilon = 1e-6;
 
-    Computer_MonteCarlo[] children;
-    double nVisits, totValue;
-    
-    /**
-     * Return the trees arity
-     * 
-     * @return arity
-     */
-    public int arity() {
-        return (isLeaf()) ? 0 : children.length;
-    }
-    
-    /**
-     * Expand the tree
-     */
-    public void expand() {
-        children = new Computer_MonteCarlo[nActions];
-        
-        for (int i = 0; i < nActions; i++) {
-            children[i] = new Computer_MonteCarlo();
-        }
-    }
-	
+	//protected Game g;
+    protected GameGrid grid;
+	private MonteCarlo_Node curNode;
+	private MonteCarlo_Node tree;
+	private int thinkTime;
+
 	/**
-	 * TODO: Not finished
+	 * Instantiates the player.
+	 *
+	 * @param g The Game being played.
+	 * @param player1 Whether or not this player is player 1.
+	 * @param thinkTime How many milliseconds this player is allowed to think per
+	 *  turn (Longer think time yields better simulations.
 	 */
+	public Computer_MonteCarlo(int thinkTime) {
+		this.thinkTime = thinkTime;
+	}
+
+	/**
+	 * Gets the current state of the game.
+	 *
+	 * @return the current state of the game.
+	 */
+	public GameGrid getGameGrid() {
+		return grid;
+	}
+
+	/**
+     * Simulates possible games until allowed think time runs out, and thn makes
+     * a move.
+     */
 	@Override
 	public Point getMove(GameGrid gamegrid) {
-		return null;
+		this.grid = gamegrid;
+		tree = new MonteCarlo_Node(grid, null, this, this.getID() + 1);
+		curNode = tree;
+		curNode.expand();
+		
+		// Begin
+		long endTime = System.currentTimeMillis() + thinkTime;
+		while (System.currentTimeMillis() < endTime) {
+			runTrial(curNode, true);
+		}
+	    
+		//if (grid.gameStatus(curState) == Game.status.ONGOING) {
+			MonteCarlo_Node best = curNode.bestMove();
+			//grid = best.getState();
+			curNode = best;
+	    //}
+		
+		return curNode.bestMove().getPoint();
+	}
+
+	/**
+	 * Gets a random move from a given state.
+	 *
+	 * @param gameState a game state from which a random child state is desired.
+	 * @return a random child state of the passed state.
+	 */
+	private MonteCarlo_Node getRandomMoveFrom(MonteCarlo_Node node) {
+		List<Point> moves = node.getGrid().getValidMoves(node.getCurPlayer());
+		Random rand = new Random(System.currentTimeMillis());
+		int r = rand.nextInt(moves.size());
+		
+		MonteCarlo_Node newNode = new MonteCarlo_Node(node.getGrid(), moves.get(r), this, node.getCurPlayer());
+		
+		return newNode;
+	}
+	
+	/**
+	 * Returns true if this player loses, false otherwise.
+	 *
+	 * @param s the status of the game to be checked.
+	 * @return true if this player loses, false otherwise.
+	 */
+	protected boolean ILose(int status) {
+		return (status == this.STATUS_PLAYER1WIN && this.getID() == 2)
+			|| (status == STATUS_PLAYER2WIN && this.getID() == 1);
 	}
 
 	/**
@@ -69,69 +103,61 @@ public class Computer_MonteCarlo extends Player {
 	public boolean isDebug() {
 		return debug;
 	}
-	
+
 	/**
-	 * @return isLeaf
+	 * Returns true if this player wins, false otherwise.
+	 *
+	 * @param s the status of the game to be checked.
+	 * @return true if this player wins, false otherwise.
 	 */
-    public boolean isLeaf() {
-        return children == null;
-    }
-    
-    /**
-     * Ultimately a roll out will end in some value assume for now that it ends
-     *  in a win or a loss and just return this at random.
-     * 
-     * @param treenode
-     * @return win or loss
-     */
-    public double rollOut(Computer_MonteCarlo treenode) {
-    	// TODO: -1 if loss, 0 if draw or +1 if win
-        return r.nextInt(2);
-    }
-    
-    /**
-     * Select
-     * @return selected node
-     */
-    private Computer_MonteCarlo select() {
-    	Computer_MonteCarlo selected = null;
-        double bestValue = Double.MIN_VALUE;
-        
-        for (Computer_MonteCarlo c : children) {
-            double uctValue = c.totValue / (c.nVisits + epsilon) +
-                       Math.sqrt(Math.log(nVisits+1) / (c.nVisits + epsilon)) +
-                           r.nextDouble() * epsilon;
-            // small random number to break ties randomly in unexpanded nodes
-            if (uctValue > bestValue) {
-                selected = c;
-                bestValue = uctValue;
-            }
-        }
-        return selected;
-    }
-    
-    /**
-     * Select action
-     */
-    public void selectAction() {
-        List<Computer_MonteCarlo> visited = new LinkedList<Computer_MonteCarlo>();
-        Computer_MonteCarlo cur = this;
-        visited.add(this);
-        
-        while (!cur.isLeaf()) {
-            cur = cur.select();
-            visited.add(cur);
-        }
-        
-        cur.expand();
-        Computer_MonteCarlo newNode = cur.select();
-        visited.add(newNode);
-        double value = rollOut(newNode);
-        for (Computer_MonteCarlo node : visited) {
-            // would need extra logic for n-player game
-            node.updateStats(value);
-        }
-    }
+	protected boolean IWin(int status) {
+		return (status == STATUS_PLAYER1WIN && this.getID() == 1)
+			|| (status == STATUS_PLAYER2WIN && this.getID() == 2);
+	}
+
+	/**
+	 * Plays a single simulated game, and encompasses the four stages of an MCTS
+	 *  simulation (selection, expansion, simulation, and backpropogation).
+	 *  Selection: Pick a node to simulate from by recursively applying UCB.
+	 *  Expansion: Add a new set of nodes to the link tree as children of the
+	 *  selected node. Simulation: Pick one of those nodes and simulate a game
+	 *  from it. Backpropogation: Rank all nodes selected during the selection
+	 *  step based on simulation outcome.
+	 *
+	 * @param node The node to begin running the trial from.
+	 * @param myTurn Whether it is this players turn or not.
+	 * @return The status of the trial.
+	 */
+	   private int runTrial(MonteCarlo_Node node, boolean myTurn)
+	   {
+	      int returnStatus;
+	      node.visit();
+	      if (!node.isLeaf()) {
+	         //selection
+	         returnStatus = runTrial(node.bestSelection(myTurn), !myTurn);
+	      } else {
+	         //expansion
+	         node.expand();
+	         
+	         if (!node.isLeaf()) {
+	            node = node.getRandomChild();
+	            node.visit();
+	         }
+	         
+	         //simulation
+	         returnStatus = simulateFrom(node);
+	      }
+	      
+	      //backpropogation
+	      if (IWin(returnStatus)) {
+	         node.setScore(node.getScore() + 1);
+	      }
+	      if (ILose(returnStatus)) {
+	         node.setScore(node.getScore() - 1);
+	      }
+	      
+	      return returnStatus;
+	   }
 
 	/**
 	 * Enable/disable debug mode
@@ -142,11 +168,39 @@ public class Computer_MonteCarlo extends Player {
 	}
 	
 	/**
-	 * Update total value
-	 * @param value
+	 * Performs a simulation or "rollout" for the "simulation" phase of the
+	 *  runTrial function. This can be written to contain game-specific heuristics
+	 *  or "finishing move" detection if desired.
+	 *
+	 * @param state the state to be simulated from.
+	 * @return the resulting status of the simulation.
 	 */
-	public void updateStats(double value) {
-        nVisits++;
-        totValue += value;
-    }
+	protected int simulateFrom(MonteCarlo_Node node) {
+		int player = node.getCurPlayer();
+		if(player == 0) {
+			if(node.getGrid().getValidMoves(0) == null) {
+				if(node.getGrid().getValidMoves(1) == null) {
+					if(node.getGrid().getWhitePoints() > node.getGrid().getBlackPoints()) {
+						return STATUS_PLAYER1WIN;
+					} else if(node.getGrid().getWhitePoints() < node.getGrid().getBlackPoints()) {
+						return STATUS_PLAYER2WIN;
+					} else {
+						return STATUS_DRAW;
+					}
+				}
+			}
+		}
+         
+		return simulateFrom(getRandomMoveFrom(node));
+	}
+	
+	public void updateGameState(GameGrid gg)
+	{
+		grid = gg;
+		if (curNode.isLeaf()) {
+			curNode.expand();
+		}
+		
+		curNode = curNode.findChildNode(gg);
+	}
 }
