@@ -1,6 +1,7 @@
-package org.iothello.logic.players;
+package org.iothello.logic.players.TD;
 
 import org.iothello.logic.GameGrid;
+import org.iothello.logic.players.Player;
 
 import java.awt.*;
 
@@ -28,4 +29,8 @@ public class Computer_TD extends Player {
     public void setDebug(boolean debug) {
         this.debug = debug;
     }
+
+    //private class
+
 }
+

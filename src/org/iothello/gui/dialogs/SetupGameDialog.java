@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import org.iothello.gui.CustomJPanel;
 import org.iothello.logic.players.*;
 import org.iothello.logic.GameGrid;
+import org.iothello.logic.players.TD.Computer_TD;
 
 /**
  * A JDialog that handles the selection of players.
