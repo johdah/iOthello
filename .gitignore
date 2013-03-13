@@ -1,0 +1,11 @@
+*.iml
+*.ipr
+*.iws
+.idea/
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear

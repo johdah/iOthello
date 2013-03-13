@@ -9,8 +9,9 @@ import org.iothello.logic.GameGrid;
 /**
  * MCTSPlayer is an implementation of Player that makes moves using UCT (A Monte
  * 	Carlo Tree Search that uses an Upper Confidence Bounds formula).
- * 
+ *
  * @author Johan Dahlberg <info@johandahlberg.com>
+ * TODO: Not finished
  */
 public class Computer_MonteCarlo extends Player {
 	public final int STATUS_ONGOING = 1, STATUS_PLAYER1WIN = 2, STATUS_DRAW = 3, STATUS_PLAYER2WIN = 4;
@@ -25,8 +26,6 @@ public class Computer_MonteCarlo extends Player {
 	/**
 	 * Instantiates the player.
 	 *
-	 * @param g The Game being played.
-	 * @param player1 Whether or not this player is player 1.
 	 * @param thinkTime How many milliseconds this player is allowed to think per
 	 *  turn (Longer think time yields better simulations.
 	 */
@@ -72,7 +71,7 @@ public class Computer_MonteCarlo extends Player {
 	/**
 	 * Gets a random move from a given state.
 	 *
-	 * @param gameState a game state from which a random child state is desired.
+	 * @param node a game state from which a random child state is desired.
 	 * @return a random child state of the passed state.
 	 */
 	private MonteCarlo_Node getRandomMoveFrom(MonteCarlo_Node node) {
@@ -88,7 +87,7 @@ public class Computer_MonteCarlo extends Player {
 	/**
 	 * Returns true if this player loses, false otherwise.
 	 *
-	 * @param s the status of the game to be checked.
+	 * @param status the status of the game to be checked.
 	 * @return true if this player loses, false otherwise.
 	 */
 	protected boolean ILose(int status) {
@@ -107,7 +106,7 @@ public class Computer_MonteCarlo extends Player {
 	/**
 	 * Returns true if this player wins, false otherwise.
 	 *
-	 * @param s the status of the game to be checked.
+	 * @param status the status of the game to be checked.
 	 * @return true if this player wins, false otherwise.
 	 */
 	protected boolean IWin(int status) {
@@ -172,7 +171,7 @@ public class Computer_MonteCarlo extends Player {
 	 *  runTrial function. This can be written to contain game-specific heuristics
 	 *  or "finishing move" detection if desired.
 	 *
-	 * @param state the state to be simulated from.
+	 * @param node the state to be simulated from.
 	 * @return the resulting status of the simulation.
 	 */
 	protected int simulateFrom(MonteCarlo_Node node) {

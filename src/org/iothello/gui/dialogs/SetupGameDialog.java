@@ -17,15 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import org.iothello.gui.CustomJPanel;
-import org.iothello.logic.players.Computer_AI_Minmax;
-import org.iothello.logic.players.Computer;
-import org.iothello.logic.players.Computer_MonteCarlo;
+import org.iothello.logic.players.*;
 import org.iothello.logic.GameGrid;
-import org.iothello.logic.players.Human;
-import org.iothello.logic.players.Player;
 
 /**
- * En JDialog som tar in information om de deltagande spelarna.
+ * A JDialog that handles the selection of players.
  * 
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
@@ -35,7 +31,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
     private int times = 10;
     private Player player1;
     private Player player2;
-    private String[] petStrings = {"Human", "Computer(random)","AI Easy(2)", "AI Medium(4)", "AI Hard(6)", "AI Extreme(8)", "AI Monte Carlo"};
+    private String[] petStrings = {"Human", "Computer(random)","AI Easy(2)", "AI Medium(4)", "AI Hard(6)", "AI Extreme(8)", "AI Monte Carlo", "AI TD"};
     private JComboBox<?> jcmPlayer1 = new JComboBox(petStrings);
     private JComboBox<?> jcmPlayer2 = new JComboBox(petStrings);
     private JTextField jtxName1 = new JTextField("Player 1");
@@ -162,7 +158,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
      
     }
     /*
-     * Sätter spelarna utifrån comboboxarna.
+     * Sï¿½tter spelarna utifrï¿½n comboboxarna.
      */
     private void setPlayers() {   
         boolean p1comp = false;
@@ -212,6 +208,15 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             if(jchDebug.isSelected()) ((Computer_MonteCarlo) player1).setDebug(true);
             
             p1comp = true;
+        } else if (jcmPlayer1.getSelectedIndex() == 7) {
+            player1 = new Computer_TD();
+            player1.setName("P1 AI TD");
+            player1.setID(GameGrid.BLACK_MARKER);
+
+            // Activate debug if debug mode is selected
+            if(jchDebug.isSelected()) ((Computer_TD) player1).setDebug(true);
+
+            p1comp = true;
         }
         
         if (jcmPlayer2.getSelectedIndex() == 0) {
@@ -258,6 +263,15 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             // Activate debug if debug mode is selected
             if(jchDebug.isSelected()) ((Computer_MonteCarlo) player2).setDebug(true);
             
+            p2comp = true;
+        } else if (jcmPlayer2.getSelectedIndex() == 7) {
+            player2 = new Computer_TD();
+            player2.setName("P2 AI TD");
+            player2.setID(GameGrid.WHITE_MARKER);
+
+            // Activate debug if debug mode is selected
+            if(jchDebug.isSelected()) ((Computer_TD) player2).setDebug(true);
+
             p2comp = true;
         }
         
@@ -333,7 +347,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             setGame();
             
             
-            System.out.println("kör rungame");
+            System.out.println("kï¿½r rungame");
             getGameMode = 0;
             this.setVisible(false);
         }
@@ -350,7 +364,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         }
         
         /*
-         * Byter grafik på avatarerna.
+         * Byter grafik pï¿½ avatarerna.
          */
         if ("comboBoxChanged".equals(e.getActionCommand())) {
             
@@ -376,7 +390,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         }
     }
     /*
-     * Slår på/av testläget(ai vs ai)
+     * Slï¿½r pï¿½/av testlï¿½get(ai vs ai)
      */
     public void setTestMode(boolean b) {
         this.testMode = b;
