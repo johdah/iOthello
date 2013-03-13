@@ -85,30 +85,24 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         labelSpeed.setForeground(Color.white);
         JLabel labelTimes = new JLabel("Runtimes for test:");
         labelTimes.setForeground(Color.white);
-        
-        
-        //jbtTest.setEnabled(false);
+
         JPanel jpnSetup = new JPanel(new GridLayout(3, 3, 10, 0));
 
         jpnSetup.add(new JLabel(""));
         jpnSetup.add(new JLabel(""));
         jpnSetup.add(new JLabel(""));
 
-        
         player1Input.add(jtxName1);
         player1Input.add(jcmPlayer1);
         player1Input.add(labelDepth1);
         player1Input.add(jtxDepth1);
         player1Input.add(labelTimes);
 
-        
-
         player2Input.add(jtxName2);
         player2Input.add(jcmPlayer2);
         player2Input.add(labelDepth2);
         player2Input.add(jtxDepth2);
         player2Input.add(jchDebug);
-
 
         jpnButtons.add(jbtStart);
         jpnButtons.add(jbtTest);
@@ -138,7 +132,6 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         jcmPlayer2.addActionListener(this);
         
         addWindowListener(new WindowAdapter() {
-            
             @Override
             public void windowClosing(WindowEvent e) {
                 System.exit(0);
@@ -154,9 +147,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         this.setLocationRelativeTo(null);
      
     }
-    /*
-     * S�tter spelarna utifr�n comboboxarna.
-     */
+
     private void setPlayers() {   
         boolean p1comp = false;
         boolean p2comp = false;
@@ -170,12 +161,6 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             player1.setName("P1 Computer A");
             player1.setID(GameGrid.BLACK_MARKER);
         }
-        /*else if (jcmPlayer1.getSelectedIndex() == 2) {
-            player1 = new Computer_1();
-            player1.setName("P1 Computer B");
-            player1.setID(GameGrid.BLACK_MARKER);
-        }
-         */
         else if (jcmPlayer1.getSelectedIndex() == 2) { 
             player1 = new Computer_AI_Minmax(getDepth1(2), true);
             player1.setName("P1 AI Easy");
@@ -225,11 +210,6 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             player2.setName("P2 Computer A");
             player2.setID(GameGrid.WHITE_MARKER);
         }
-        /*else if (jcmPlayer2.getSelectedIndex() == 2) {
-            player2 = new Computer_1();
-            player2.setName("P2 Computer B");
-            player2.setID(GameGrid.WHITE_MARKER);
-        }*/
         else if (jcmPlayer2.getSelectedIndex() == 2) {
             Computer_AI_Minmax tmpPlayer = new Computer_AI_Minmax(getDepth2(2), true);
             tmpPlayer.setMethodMobility(6);
@@ -288,9 +268,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
             
             player2 = cmp2;
         }
-        
-        
-    } 
+    }
     
     private void setGame(){
         setPlayers();
@@ -300,8 +278,6 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         
         if(this.isDebug()) {
             HelperDialog.getInstance().setVisible(true);
-
-
         }
         
         this.setCompSpeed(Integer.parseInt(jtxSpeed.getText()));
@@ -333,62 +309,41 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         return player2;
     }
     
+    @SuppressWarnings("UnusedDeclaration")
     public boolean getTestMode() {
         return testMode;
     }
     
     @Override
     public void actionPerformed(ActionEvent e) {
-
         if ("Start".equals(e.getActionCommand())) {
             setGame();
-            
-            
+
             System.out.println("k�r rungame");
             getGameMode = 0;
             this.setVisible(false);
         }
         
         if ("Test".equals(e.getActionCommand())) {
-        
-             
             setGame();
             getGameMode=2;
             testMode = true;
 
             this.setVisible(false);
-            
         }
-        
-        /*
-         * Byter grafik p� avatarerna.
-         */
+
         if ("comboBoxChanged".equals(e.getActionCommand())) {
+            if (jcmPlayer1.getSelectedIndex() != 0 && jcmPlayer2.getSelectedIndex() != 0) jbtTest.setEnabled(true);
+            else jbtTest.setEnabled(false);
             
-            if (jcmPlayer1.getSelectedIndex() != 0 && jcmPlayer2.getSelectedIndex() != 0) {
-                jbtTest.setEnabled(true);
-            } else {
-                jbtTest.setEnabled(false);
-            }
-            
-            if (jcmPlayer1.getSelectedIndex() != 0) {
-                p1Avatar.setIcon(new ImageIcon("gfx/robotL.png"));
-            }
-            if (jcmPlayer1.getSelectedIndex() == 0) {
-                p1Avatar.setIcon(new ImageIcon("gfx/apaL.png"));
-            }
-            if (jcmPlayer2.getSelectedIndex() != 0) {
-                p2Avatar.setIcon(new ImageIcon("gfx/robotR.png"));
-            }
-            if (jcmPlayer2.getSelectedIndex() == 0) {
-                p2Avatar.setIcon(new ImageIcon("gfx/apaR.png"));
-            }
+            if (jcmPlayer1.getSelectedIndex() != 0) p1Avatar.setIcon(new ImageIcon("gfx/robotL.png"));
+            if (jcmPlayer1.getSelectedIndex() == 0) p1Avatar.setIcon(new ImageIcon("gfx/apaL.png"));
+            if (jcmPlayer2.getSelectedIndex() != 0) p2Avatar.setIcon(new ImageIcon("gfx/robotR.png"));
+            if (jcmPlayer2.getSelectedIndex() == 0) p2Avatar.setIcon(new ImageIcon("gfx/apaR.png"));
             
         }
     }
-    /*
-     * Sl�r p�/av testl�get(ai vs ai)
-     */
+
     public void setTestMode(boolean b) {
         this.testMode = b;
     }
@@ -403,6 +358,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
     public int getTimes() {
         return times;
     }
+
     public void setTimes(int times) {
         this.times = times;
     }

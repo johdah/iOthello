@@ -37,11 +37,13 @@ import org.iothello.logic.players.Player;
 public class GameFrame extends JFrame {
 	private static final long serialVersionUID = -533543048838510024L;
 	private static GameBoard panel;
+    @SuppressWarnings("UnusedDeclaration")
     private static List<Point> validMoves = null;
     private boolean showValid = false;
     private boolean edit = false;
     public int editPlayer = -1;
 
+    @SuppressWarnings("UnusedDeclaration")
     public boolean isEdit() {
         return edit;
     }
@@ -74,7 +76,6 @@ public class GameFrame extends JFrame {
         points = new JLabel("<html>Player 1: 0 <br>Player 2: 0");
         knappsats.add(playerTurn);
         knappsats.add(points);
-        //knappsats.add(jbtNew);
         knappsats.add(jbtEnd);
 
         getContentPane().add(knappsats, BorderLayout.SOUTH);
@@ -92,12 +93,15 @@ public class GameFrame extends JFrame {
 
     }
     
+    @SuppressWarnings("UnusedDeclaration")
     public void resetFrame() {
         panel = new GameBoard();
     }
     
-    /*
-     * Skickar vidare gamegrid till gameboard.
+    /**
+     * Send GameGrid to GameBoard
+     * @param gamegrid GameGrid
+     * @param player int
      */
     public void updateBoard(GameGrid gamegrid, int player) {
         this.player = player;
@@ -112,20 +116,8 @@ public class GameFrame extends JFrame {
         } 
         
         pack();
-        /*
-            while(HelperDialog.getInstance().isStep() && !HelperDialog.getInstance().isNext()) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(GameFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        */
     }
 
-    /*
-     * Uppdaterar JLabels.
-     */
     public void setFrameLabels(Player player1, Player player2, Player currentPlayer) {
         points.setText("<html>" + player1.getName() + ": " + player1.getPoints() + " <br>" + player2.getName() + ": " + player2.getPoints());
         if (currentPlayer.getID() == 1) {
@@ -135,10 +127,7 @@ public class GameFrame extends JFrame {
             playerTurn.setText("<html><h3> " + currentPlayer.getName() + "</h3> Color: White");
         }
     }
-    
-    /*
-     * Uppdaterar datorns "betänketid".
-     */
+
     public void setSpeed(int speed) {
         compSpeed = speed;
        
@@ -149,10 +138,7 @@ public class GameFrame extends JFrame {
         return endGame;
 
     }
-    
-    /*
-     * Menubar.
-     */
+
     class OthelloMenuBar extends JMenuBar {
 		private static final long serialVersionUID = 5195246075130274563L;
 
@@ -183,7 +169,6 @@ public class GameFrame extends JFrame {
 
             JMenuItem newgame = new JMenuItem("New game", KeyEvent.VK_N);
             newgame.addActionListener(new menuNewGame());
-            //menu.add(newgame);
             menu.addSeparator();
 
             JMenuItem exitgame = new JMenuItem("Exit", KeyEvent.VK_E);
@@ -198,8 +183,6 @@ public class GameFrame extends JFrame {
             
             settings.add(valmoves);
             settings.addSeparator();
-            //settings.add(editgame);
-
 
             speedCheckBox.addActionListener(new changeCompSpeed());
             settings.add(speedCheckBox);
@@ -214,8 +197,7 @@ public class GameFrame extends JFrame {
                 JOptionPane.showMessageDialog(null, "You are missing graphic compoments, try to reinstall :)", "Error", JOptionPane.ERROR_MESSAGE);
                 System.exit(0);
             } else {
-                for (int i = 0; i < folders.length; i++) {
-                    String themeName = folders[i];
+                for (String themeName : folders) {
                     JRadioButtonMenuItem jrdTheme = new JRadioButtonMenuItem(themeName);
                     jrdTheme.addActionListener(new changeTheme());
                     themes.add(jrdTheme);
@@ -226,10 +208,6 @@ public class GameFrame extends JFrame {
         }
         
         class setEdit implements ActionListener {
-            /*
-             * Slår på eller av funktionen att visa valid moves och sedan uppdaterars gameboard.
-             */
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!edit) {
@@ -259,16 +237,9 @@ public class GameFrame extends JFrame {
         }
         
         class changeShowValid implements ActionListener {
-            /*
-             * Slår på eller av funktionen att visa valid moves och sedan uppdaterars gameboard.
-             */
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (!showValid) {
-                    showValid = true;
-                } else {
-                    showValid = false;
-                }
+                showValid = !showValid;
                 panel.updateBoard(gamegrid, showValid, player);
                 pack();
             }
@@ -303,7 +274,6 @@ public class GameFrame extends JFrame {
     }
 
     class menuNewGame implements ActionListener {
-    	//Sätter endGame boolen till true, samt släpper låset i MoveQueue ifall tråden står och väntar där.
         @Override
         public void actionPerformed(ActionEvent e) {
             moveq.releaseLock();
@@ -314,7 +284,7 @@ public class GameFrame extends JFrame {
     class menuAbout implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            JOptionPane.showMessageDialog(null, "Laboration 2 OOPJ - Gameplay & AI\n\n   o Bjorn Dahlstrand\n   o Niclas Gustafsson\n   o Fredrik Tornvall\n\nLaboration 3 OOPJ - Network & Database\n\n   o Bjorn Dahlstrand\n   o Anders Hansson\n   o Pierre Odengard\n\n", "About Othello",
+            JOptionPane.showMessageDialog(null, "Laboration XX\n\n   o Deltagare 1\n   o Deltagare 2\n\n", "About Othello",
                     JOptionPane.PLAIN_MESSAGE);
         }
     }

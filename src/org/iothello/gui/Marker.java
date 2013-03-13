@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 /**
- * En Jlabel som representerar spelarens markör(eller frånvaro av markör), samt innehåller en mouselistener för att kunna registrera drag.
+ * An Jlabel that represents the players marker (or absence), and a MouseListener to register moves.
  * 
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
@@ -26,6 +26,7 @@ public class Marker extends JLabel implements MouseListener {
         pos = new Point(x, y);
     }
 
+    @SuppressWarnings("UnusedDeclaration")
     public Point getPos() {
         return pos;
     }
@@ -43,8 +44,8 @@ public class Marker extends JLabel implements MouseListener {
     public void mouseReleased(MouseEvent e) {
     }
 
-    /*
-     * Om show valid moves=enabled visas en speciell ikon istället då musen är ovanför.
+    /**
+     * If show valid moves is true, show an icon instead of the mouse above.
      */
     @Override
     public void mouseEntered(MouseEvent e) {

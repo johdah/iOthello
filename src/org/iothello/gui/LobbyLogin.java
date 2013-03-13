@@ -10,8 +10,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.rmi.AccessException;
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -23,9 +21,7 @@ import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 
 import javax.swing.text.DefaultCaret;
 
@@ -41,10 +37,11 @@ import org.iothello.logic.players.Player;
  * 
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
+@SuppressWarnings("UnusedParameters")
 public class LobbyLogin extends JFrame {
 	private static final long serialVersionUID = 4522570030166995968L;
 	private Server3Interface si;
-    private List<User> users = new ArrayList<User>();
+    private List<User> users = new ArrayList<>();
     private boolean result;
     private boolean boundToRegistry = false;
     private boolean loggedin = false;
@@ -55,7 +52,7 @@ public class LobbyLogin extends JFrame {
     /** Creates new form LobbyLogin */
     public LobbyLogin() throws RemoteException, NotBoundException {
         initComponents();
-        jtaChat.append("Testanandare:\nname\tpassword\nname2\tpassword\n");
+        jtaChat.append("Tester:\nname\tpassword\nname2\tpassword\n");
         this.addWindowListener(new WindowListener() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -99,7 +96,7 @@ public class LobbyLogin extends JFrame {
             }
         });
         
-        //skapar en random portnummer för att förenkla när man kör två klienter på localhost.
+        // Creates a random portnum to make it easier when running two clients on localhost
         jtxMinPort.setText(String.valueOf(new Random().nextInt(30000) + 1500));
       
         this.setLocationRelativeTo(null);
@@ -117,18 +114,18 @@ public class LobbyLogin extends JFrame {
         jtxMinPort = new javax.swing.JTextField();
         jbtLogin = new javax.swing.JButton();
         jbtCreateUser = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
+        JScrollPane jScrollPane1 = new JScrollPane();
         jtaChat = new javax.swing.JTextArea();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jlsUsers = new javax.swing.JList();
+        JScrollPane jScrollPane2 = new JScrollPane();
+        jlsUsers = new javax.swing.JList<>();
         jtxMessage = new javax.swing.JTextField();
         jbtChallenge = new javax.swing.JButton();
         jbtHighscore = new javax.swing.JButton();
-        jlbName = new javax.swing.JLabel();
+        JLabel jlbName = new JLabel();
         jtxServerIP = new javax.swing.JTextField();
-        jlbPassword = new javax.swing.JLabel();
-        jlbServerIP = new javax.swing.JLabel();
-        jlbMinPort = new javax.swing.JLabel();
+        JLabel jlbPassword = new JLabel();
+        JLabel jlbServerIP = new JLabel();
+        JLabel jlbMinPort = new JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -223,7 +220,7 @@ public class LobbyLogin extends JFrame {
 
         jlbServerIP.setText("SERVER IP");
 
-        jlbMinPort.setText("Min port");
+        jlbMinPort.setText("My port");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -307,26 +304,29 @@ public class LobbyLogin extends JFrame {
         return player2;
     }
     
-	//Binder till RMI-register och loggar in
+    /**
+     * Binder to RMI-register and login
+     * @param evt ActionEvent
+     */
 	private void jbtLoginActionPerformed(java.awt.event.ActionEvent evt) {
-	
 	    if (!boundToRegistry) {
 	        bindToRMI();
 	    }
-	    //inloggning
+
 	    login();
-	
 	}
-	
+
+    /**
+     * @param evt ActionEvent
+     */
 	private void jbtCreateUserActionPerformed(java.awt.event.ActionEvent evt) {
-	
-	    //om inte kopplad till rmi, gör det.
+	    // if not connected to RMI
 	    if (!boundToRegistry) {
 	        bindToRMI();
 	    }
 	    try {
 	        result = si.createUser(jtxName.getText(), jtxPassword.getText());
-	           } catch (RemoteException ex) {
+        } catch (RemoteException ex) {
 	        Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
 	    }
 	
@@ -336,7 +336,10 @@ public class LobbyLogin extends JFrame {
 	        JOptionPane.showMessageDialog(null, "Could not create user.");
 	    }
 	}
-	
+
+    /**
+     * @param evt ActionEvent
+     */
 	private void jtxMessageActionPerformed(java.awt.event.ActionEvent evt) {
 	    try {
 	        si.sendPublicMessage(jtxName.getText() + ": " + jtxMessage.getText());
@@ -345,8 +348,11 @@ public class LobbyLogin extends JFrame {
 	    }
 	    jtxMessage.setText("");
 	}
-	
-	//kollar ifall en användare är vald och dessutom inte är den egna, och sätter challengeknappen till enabled.
+
+    /**
+     * Check if a user is choosen and isn't the own, and sets challenge to enabled
+     * @param evt ActionEvent
+     */
 	private void jlsUsersValueChanged(javax.swing.event.ListSelectionEvent evt) {
 	    if (jlsUsers.getSelectedIndex() > -1 && jlsUsers.getSelectedIndex() <= users.size() && !users.get(jlsUsers.getSelectedIndex()).getName().equals(me.getName())) {
 	        jbtChallenge.setEnabled(true);
@@ -354,8 +360,11 @@ public class LobbyLogin extends JFrame {
 	        jbtChallenge.setEnabled(false);
 	    }
 	}
-	
-	//visar highscore
+
+    /**
+     * Show highscore
+     * @param evt ActionEvent
+     */
 	private void jbtHighscoreActionPerformed(java.awt.event.ActionEvent evt) {
 	    try {
 	        HighscoreViewer hv = new HighscoreViewer(this, false, si.getHighscore(), si.getRanking());
@@ -365,16 +374,25 @@ public class LobbyLogin extends JFrame {
 	    }
 	}
 
+    /**
+     * @param evt ActionEvent
+     */
     private void jtxPasswordFocusGained(java.awt.event.FocusEvent evt) {
         jtxPassword.setSelectionStart(0);
         jtxPassword.setSelectionEnd(jtxPassword.getText().length());
     }
 
+    /**
+     * @param evt ActionEvent
+     */
     private void jtxNameFocusGained(java.awt.event.FocusEvent evt) {
         jtxName.setSelectionStart(0);
         jtxName.setSelectionEnd(jtxName.getText().length());
     }
 
+    /**
+     * @param evt ActionEvent
+     */
     private void jbtChallengeActionPerformed(java.awt.event.ActionEvent evt) {
          try {
              
@@ -391,28 +409,27 @@ public class LobbyLogin extends JFrame {
         }
     }
 
+    /**
+     * @param evt ActionEvent
+     */
 	private void jtxServerIPFocusGained(java.awt.event.FocusEvent evt) {
 	    jtxServerIP.setSelectionStart(0);
 	    jtxServerIP.setSelectionEnd(jtxServerIP.getText().length());
 	}
-	
+
+    /**
+     * @param evt ActionEvent
+     */
 	private void jtxMinPortFocusGained(java.awt.event.FocusEvent evt) {
 	    jtxMinPort.setSelectionStart(0);
 	    jtxMinPort.setSelectionEnd(jtxMinPort.getText().length());
 	}
 
-    // Variables declaration - do not modify
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton jbtChallenge;
     private javax.swing.JButton jbtCreateUser;
     private javax.swing.JButton jbtHighscore;
     private javax.swing.JButton jbtLogin;
-    private javax.swing.JLabel jlbMinPort;
-    private javax.swing.JLabel jlbName;
-    private javax.swing.JLabel jlbPassword;
-    private javax.swing.JLabel jlbServerIP;
-    private javax.swing.JList jlsUsers;
+    private JList<Object> jlsUsers;
     private javax.swing.JTextArea jtaChat;
     private javax.swing.JTextField jtxMessage;
     private javax.swing.JTextField jtxMinPort;
@@ -424,7 +441,7 @@ public class LobbyLogin extends JFrame {
     public void setStatus(int status) {
         try {
             si.setPlayerStatus(me, status);
-        } catch (RemoteException e) {
+        } catch (RemoteException ignored) {
         }
     }
 
@@ -441,19 +458,12 @@ public class LobbyLogin extends JFrame {
             Registry registry = LocateRegistry.getRegistry(jtxServerIP.getText(), 9009);
             si = (Server3Interface) registry.lookup("ServerInterface");
             boundToRegistry = true;
-        }   catch (ConnectException ex) {
+        } catch (ConnectException ex) {
             System.out.println(ex);
+        } catch (NotBoundException | RemoteException ex) {
+            JOptionPane.showMessageDialog(null, "Server could not be found. Try another ip-adress.", "Warning!", JOptionPane.WARNING_MESSAGE);
+            Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        catch (NotBoundException ex) {
-            JOptionPane.showMessageDialog(null, "Server could not be found. Try another ip-adress.", "Warning!", JOptionPane.WARNING_MESSAGE);
-            Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (AccessException ex) {
-            JOptionPane.showMessageDialog(null, "Server could not be found. Try another ip-adress.", "Warning!", JOptionPane.WARNING_MESSAGE);
-            Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
-        }catch (RemoteException ex) {
-            JOptionPane.showMessageDialog(null, "Server could not be found. Try another ip-adress.", "Warning!", JOptionPane.WARNING_MESSAGE);
-            Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
-        } 
     }
 
     private String dialogLanWan() {
@@ -488,19 +498,18 @@ public class LobbyLogin extends JFrame {
                 
                 Thread threadReportIn = new Thread() {
                     
-                    public void run() {
+                public void run() {
                     while(true) {
-                            try {
-                                si.reportIn(me);
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                System.out.println(e);
-                            } catch (RemoteException e) {
-                                System.out.println(e);
-                            }
+                        try {
+                            si.reportIn(me);
+                            Thread.sleep(300);
+                        } catch (InterruptedException e) {
+                            System.out.println(e);
+                        } catch (RemoteException e) {
+                            System.out.println(e);
                         }
                     }
-                };
+                }};
                 threadReportIn.start();
                 
                 jbtHighscore.setEnabled(true);
@@ -511,8 +520,7 @@ public class LobbyLogin extends JFrame {
         } catch(ConnectException ex) {
             JOptionPane.showMessageDialog(null, "Timed out. Please try restarting client.", "Warning!", JOptionPane.WARNING_MESSAGE);
             System.out.println(ex);
-        }
-            catch (RemoteException ex) {
+        } catch (RemoteException ex) {
             Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException ex) {
             JOptionPane.showMessageDialog(null, "Server could not be found. Try another ip-adress.", "Warning!", JOptionPane.WARNING_MESSAGE);
@@ -527,23 +535,15 @@ public class LobbyLogin extends JFrame {
         @Override
         public void run() {
             while (true) {
-
-                //updatera userlist
                 updateUserList();
-
-                //uppdatera chat
                 updateChat();
-
-                //kolla utmaningar
                 checkChallenge();
 
-                //vila lite
                 try {
                     Thread.sleep(300);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
         }
 
@@ -562,79 +562,69 @@ public class LobbyLogin extends JFrame {
             try {
                 chatUpdate = si.getPublicChatMessagesSince(chatPos);
                 for (Object chat : chatUpdate) {
-                    jtaChat.append((String) chat + "\n");
+                    jtaChat.append(chat + "\n");
                 }
                 chatPos += chatUpdate.size();
             } catch (RemoteException ex) {
                 Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
             }
-
         }
 
         private void checkChallenge() {
             try {
-
                 User challenger = si.challenged(me.getName());
 
                 if (challenger != null) {
 
-                    // Player har fått en utmaning
-                    if (si.getPlayerStatus(me) == 1) {
+                    // Player has gotten a challenge
+                    // Show accept challenge-dialog
+                    if (si.getPlayerStatus(me) == 1) if (JOptionPane.showOptionDialog(null,
+                            challenger.getName() + " has challenged you! Do You accept?",
+                            "Challenge!", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE, null,
+                            new String[]{"Yes", "No"}, "No") == JOptionPane.YES_OPTION) {
 
-                        // Visa accept challenge-dialog
+                        // Player accepted
+                        si.setPlayerStatus(me, 2);
 
-                        if (JOptionPane.showOptionDialog(null,
-                                challenger.getName() + " has challenged you! Do You accept?",
-                                "Challenge!", JOptionPane.YES_NO_OPTION,
-                                JOptionPane.QUESTION_MESSAGE, null,
-                                new String[]{"Yes", "No"}, "No") == JOptionPane.YES_OPTION) {
-
-                            // Player accepterade utmaningen
-                            si.setPlayerStatus(me, 2);
-
-                            si.answerChallenge(challenger, me, true);
-                            try {
-                                // Sätt spelare
-                                player1 = new NetPlayerExternal(me.getPort());
-                            } catch (UnknownHostException ex) {
-                                Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
-                            } catch (IOException ex) {
-                                Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            player1.setName(challenger.getName());
-                            player1.setID(1);
-                            try {
-                                // Sätt spelare
-                                
-                                if (JOptionPane.showOptionDialog(null,"Local computer player?",
-                                        "Computer?", JOptionPane.YES_NO_OPTION,
-                                        JOptionPane.QUESTION_MESSAGE, null,
-                                                                 new String[]{"Yes", "No"}, "No") == JOptionPane.YES_OPTION) {
-                                    player2 = new NetComputerLocal(challenger.getIP(), challenger.getPort(), 2);
-                                
-                                } else {
-                                    player2 = new NetPlayerLocal(challenger.getIP(), challenger.getPort());
-                                }
-                            } catch (IOException ex) {
-                                Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            player2.setName(me.getName());
-                            player2.setID(2);
-
-                            Othello.releaseLock();
-                            //si.setPlayerStatus(me, 0);
-                        } else {
-                            // Player nekade utmaningen
-                            si.setPlayerStatus(me, 0);
+                        si.answerChallenge(challenger, me, true);
+                        try {
+                            // Set player
+                            player1 = new NetPlayerExternal(me.getPort());
+                        } catch (IOException ex) {
+                            Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
                         }
+                        player1.setName(challenger.getName());
+                        player1.setID(1);
+                        try {
+                            // Set player
+                            if (JOptionPane.showOptionDialog(null, "Local computer player?",
+                                    "Computer?", JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE, null,
+                                    new String[]{"Yes", "No"}, "No") == JOptionPane.YES_OPTION) {
+                                player2 = new NetComputerLocal(challenger.getIP(), challenger.getPort(), 2);
+
+                            } else {
+                                player2 = new NetPlayerLocal(challenger.getIP(), challenger.getPort());
+                            }
+                        } catch (IOException ex) {
+                            Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        player2.setName(me.getName());
+                        player2.setID(2);
+
+                        Othello.releaseLock();
+                    } else {
+                        // Player rejected
+                        si.setPlayerStatus(me, 0);
                     }
 
-                    // Player har fått svar på en utmaning
+                    // Player has gotten an answer from opponent
                     if (si.getPlayerStatus(me) == 777) {
                         si.setPlayerStatus(me, 2);
 
                         try {
-                            // Sätt spelare
+                            // Set player
                             if (JOptionPane.showOptionDialog(null,"Local computer player?",
                                     "Computer?", JOptionPane.YES_NO_OPTION,
                                     JOptionPane.QUESTION_MESSAGE, null,
@@ -651,22 +641,19 @@ public class LobbyLogin extends JFrame {
                         player1.setID(1);
 
                         try {
-                            // Sätt spelare
+                            // Set player
                             player2 = new NetPlayerExternal(me.getPort());
-                        } catch (UnknownHostException ex) {
-                            Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (IOException ex) {
                             Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
                         }
                         player2.setName(challenger.getName());
                         player2.setID(2);
 
-                        // Starta ett game
+                        // Start a game
                         Othello.releaseLock();
-                        //si.setPlayerStatus(me, 0);
                     }
 
-                    // Ta bort challenger
+                    // Remove challenger
                     si.setChallenger(me, null);
 
                 }
@@ -677,19 +664,23 @@ public class LobbyLogin extends JFrame {
         }
     }
 
-    //hämtar klientens externa ip adress via en nättjänst.
+    /**
+     * Fetch clients externa ip-adress through a net service
+     * @return externalIp
+     */
     private String getMyExternalIp() {
         BufferedReader in = null;
         try {
             URL whatismyip = new URL("http://automation.whatismyip.com/n09230945.asp");
             in = new BufferedReader(new InputStreamReader(whatismyip.openStream()));
-            String ip = in.readLine();
-            return ip;
+            return in.readLine();
         } catch (IOException ex) {
             Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                in.close();
+                if (in != null) {
+                    in.close();
+                }
             } catch (IOException ex) {
                 Logger.getLogger(LobbyLogin.class.getName()).log(Level.SEVERE, null, ex);
             }

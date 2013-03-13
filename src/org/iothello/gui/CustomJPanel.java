@@ -8,7 +8,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
 /**
- * Skapar en ny JPanel med valfri bakgrundsbild
+ * Create a new JPanel
  * 
  * @author Johan Dahlberg <info@johandahlberg.com>
  */

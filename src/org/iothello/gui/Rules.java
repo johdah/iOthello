@@ -9,16 +9,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 /**
- * Laddar ner och visar Othello regler från en websida. Om den ej kan hittas visas ett felmeddelande.
- * 
+ * Downloads and presents the Othello rules from a website, if not found show an error message
+ *
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
 public class Rules implements ActionListener {
-
     private JFrame rules = new JFrame();
 
     public Rules() {
-
         rules.setTitle("Rules!");
 
         JEditorPane jep = null;
@@ -28,13 +26,12 @@ public class Rules implements ActionListener {
             JOptionPane.showMessageDialog(null, "Oops, I could not find the rules.", "Error",
                     JOptionPane.PLAIN_MESSAGE);
         }
+
         JScrollPane scroll = new JScrollPane(jep, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         rules.pack();
         rules.setSize(850, 600);
         rules.setVisible(false);
         rules.add(scroll);
-
-
     }
 
     @Override

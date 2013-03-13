@@ -1,8 +1,9 @@
 package org.iothello.gui.dialogs;
 
-import javax.swing.JDialog;
+import javax.swing.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -21,13 +22,13 @@ public class HighscoreViewer extends JDialog {
     }
 
     private void initComponents() {
-        jtpHighScore = new javax.swing.JTabbedPane();
-        jspScrollHighscore = new javax.swing.JScrollPane();
+        JTabbedPane jtpHighScore = new JTabbedPane();
+        JScrollPane jspScrollHighscore = new JScrollPane();
         jtHighscore = new javax.swing.JTable();
         jspScrollRanking = new javax.swing.JScrollPane();
         jtPlayerRanking = new javax.swing.JTable();
-        jbtClose = new javax.swing.JButton();
-        jlHighscores = new javax.swing.JLabel();
+        JButton jbtClose = new JButton();
+        JLabel jlHighscores = new JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Highscores");
@@ -174,23 +175,23 @@ public class HighscoreViewer extends JDialog {
         pack();
     }
 
+    @SuppressWarnings("UnusedParameters")
     private void jbtCloseActionPerformed(java.awt.event.ActionEvent evt) {
         this.dispose();
     }
-    // Variables declaration - do not modify
-    private javax.swing.JButton jbtClose;
-    private javax.swing.JLabel jlHighscores;
-    private javax.swing.JScrollPane jspScrollHighscore;
+
     private javax.swing.JScrollPane jspScrollRanking;
     private javax.swing.JTable jtHighscore;
     private javax.swing.JTable jtPlayerRanking;
-    private javax.swing.JTabbedPane jtpHighScore;
     // End of variables declaration
     private int x, y = 0;
 
-    // Takes in a arraylist that holds a copy of the top highscores from the
-    // database and then inserts that copy into the JTable called jtHighscore.
-    public void insertHighscore(ArrayList highscoreList) {
+    /**
+     * Takes in a arraylist that holds a copy of the top highscores from the
+     *  database and then inserts that copy into the JTable called jtHighscore.
+     * @param highscoreList List
+     */
+    public void insertHighscore(List highscoreList) {
         x = 0;
         
         for (int i = 0; i < highscoreList.size(); i += 2) {
@@ -200,9 +201,12 @@ public class HighscoreViewer extends JDialog {
         }
     }
 
-    // Takes in a arraylist that holds a copy of the current ranking from the
-    // database and then inserts that copy into the JTable called jtPlayerRanking.
-    public void insertRanking(ArrayList rankingList) {
+    /**
+     * Takes in a arraylist that holds a copy of the current ranking from the
+     *  database and then inserts that copy into the JTable called jtPlayerRanking.
+     * @param rankingList List
+     */
+    public void insertRanking(List rankingList) {
         x = 0;
         
         for (int i = 0; i < rankingList.size(); i += 5) {
@@ -213,6 +217,5 @@ public class HighscoreViewer extends JDialog {
             jtPlayerRanking.setValueAt(rankingList.get(i + 4), x, y + 4);
             x++;
         }
-
     }
 }

@@ -32,7 +32,6 @@ public class GameBoard extends JPanel {
     private ImageIcon Valid_black_marker;
     private ImageIcon Valid_white_marker;
     private Image BoardBackground;
-    private static boolean edit = false;
     private MoveQueue mq = new MoveQueue();
     public int hoover_i=-1, hoover_j=-1;
     
@@ -53,12 +52,8 @@ public class GameBoard extends JPanel {
     }
     
     public void editGame(boolean pause) {
-        this.edit = pause;
     }
-    
-    /*
-     * Uppdaterar brädet genom att tömma gridlayouten och fylla på med market enligt aktuell speluppställning.
-     */
+
     public void updateBoard(GameGrid gamegrid, boolean showValid, int player) {
         GameBoard.player = player;
         this.removeAll();
@@ -97,7 +92,6 @@ public class GameBoard extends JPanel {
     }
 
     public void editBoard(GameGrid gamegrid) {
-        GameBoard.player = player;
         this.removeAll();
         int grid[][] = gamegrid.getGameGrid();
         
@@ -131,10 +125,7 @@ public class GameBoard extends JPanel {
         GameBoard.theme = theme;
         setTheme();
     }
-    
-    /*
-     * Skickar tillbaka den ImageIcon som ska visar när muspekaren hoovrar över en godkänd ruta. 
-     */
+
     public static Icon getMouse_Over_Marker() {
         if (player == 1) {
             Mouse_Over_Marker = new ImageIcon("gfx/themes/" + theme + "/Black_over.png");
@@ -147,10 +138,7 @@ public class GameBoard extends JPanel {
         }
         return Mouse_Over_Marker;
     }
-    
-    /*
-     * Byter bilderna som visas, tema.
-     */
+
     private void setTheme() {
         Black_marker = new ImageIcon("gfx/themes/" + theme + "/Black_marker.png");
         White_marker = new ImageIcon("gfx/themes/" + theme + "/White_marker.png");
@@ -160,10 +148,7 @@ public class GameBoard extends JPanel {
         Valid_white_marker = new ImageIcon("gfx/themes/" + theme + "/White_valid.png");
         BoardBackground = (new ImageIcon("gfx/themes/" + theme + "/board.jpg").getImage());
     }
-    
-    /* 
-     * Sätter ett drag i MoveQueue
-     */
+
     public void setMove(int x, int y) {
         mq.setMove(x, y);
     }

@@ -4,7 +4,7 @@ import java.awt.event.MouseEvent;
 import org.iothello.logic.GameGrid;
 
 /**
- * En Jlabel som representerar spelarens markör(eller frånvaro av markör), samt innehåller en mouselistener för att kunna registrera drag.
+ * An Jlabel that represents the players marker (or absence), and a MouseListener to register moves.
  * 
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
@@ -18,12 +18,10 @@ public class MarkerEdit extends Marker {
     }
     
     /**
-     * Om show valid moves=enabled visas en speciell ikon istället då musen är ovanför.
+     * If show valid moves is true, show an icon instead of the mouse above.
      */
     @Override
     public void mouseEntered(MouseEvent e) {
-        //temp = (ImageIcon) getIcon();
-        //setIcon(GameBoard.getMouse_Over_Marker());
         gameboard.hoover_j = pos.x;
         gameboard.hoover_i = pos.y;
 
