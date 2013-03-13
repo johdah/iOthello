@@ -3,9 +3,9 @@ package org.iothello.logic.players;
 import java.awt.Point;
 
 import org.iothello.logic.GameGrid;
-import org.iothello.logic.players.td.TDGrid;
-import org.iothello.logic.players.td.TDPolicy;
-import org.iothello.logic.players.td.TDLearner;
+import org.iothello.logic.players.td_old.TDGrid;
+import org.iothello.logic.players.td_old.TDPolicy;
+import org.iothello.logic.players.td_old.TDLearner;
 
 public class Computer_TD_Old extends Player {
 	private boolean debug = false;

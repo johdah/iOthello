@@ -1,4 +1,4 @@
-package org.iothello.logic.players.td;
+package org.iothello.logic.players.td_old;
 
 import java.util.Vector;
 

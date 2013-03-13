@@ -1,6 +1,4 @@
-package org.iothello.logic.players.td;
-
-import org.iothello.logic.GameGrid;
+package org.iothello.logic.players.td_old;
 
 public interface TDWorld {
     // Returns the array containing the information about the
