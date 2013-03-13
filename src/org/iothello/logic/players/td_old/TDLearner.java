@@ -13,7 +13,7 @@ public class TDLearner {
     public static final int SARSA = 2;
     public static final int Q_LAMBDA = 3; // Good parms were lambda=0.05, gamma=0.1, alpha=0.01, epsilon=0.1
 
-    // Action selection types
+    // IAction selection types
     public static final int E_GREEDY = 1;
     public static final int SOFTMAX = 2;
 
@@ -304,7 +304,7 @@ public class TDLearner {
 					    if( rndValue > offset && rndValue < offset + prob[action] )
 						selectedAction = action;
 					    offset += prob[action];
-					    // System.out.println( "Action " + action + " chosen with " + prob[action] );
+					    // System.out.println( "IAction " + action + " chosen with " + prob[action] );
 					}
 			
 					if( thisWorld.validAction( selectedAction ) )
