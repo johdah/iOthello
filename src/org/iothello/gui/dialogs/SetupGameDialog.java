@@ -31,15 +31,14 @@ public class SetupGameDialog extends JDialog implements ActionListener {
     private int times = 10;
     private Player player1;
     private Player player2;
-    private String[] petStrings = {"Human", "Computer(random)","AI Easy(2)", "AI Medium(4)", "AI Hard(6)", "AI Extreme(8)", "AI Monte Carlo", "AI TD"};
-    private JComboBox<?> jcmPlayer1 = new JComboBox(petStrings);
-    private JComboBox<?> jcmPlayer2 = new JComboBox(petStrings);
+    private String[] petStrings = new String[]{"Human", "Computer(random)", "AI Easy(2)", "AI Medium(4)", "AI Hard(6)", "AI Extreme(8)", "AI Monte Carlo", "AI TD"};
+    private JComboBox<?> jcmPlayer1 = new JComboBox<>(petStrings);
+    private JComboBox<?> jcmPlayer2 = new JComboBox<>(petStrings);
     private JTextField jtxName1 = new JTextField("Player 1");
     private JTextField jtxName2 = new JTextField("Player 2");
     private boolean testMode = false;
     private boolean debug = false;
     private JButton jbtTest = new JButton("Test");
-    private JButton jbtStart = new JButton("Start");
     private JCheckBox jchDebug = new JCheckBox("Debug");
     private JTextField jtxDepth1 = new JTextField("");
     private JTextField jtxDepth2 = new JTextField("");
@@ -48,11 +47,6 @@ public class SetupGameDialog extends JDialog implements ActionListener {
     private JLabel p1Avatar = new JLabel("");
     private JLabel p2Avatar = new JLabel("");
 
-    private JLabel labelDepth1 = new JLabel("P1 Depth:");
-    private JLabel labelDepth2 = new JLabel("P2 Depth:");
-    private JLabel labelSpeed = new JLabel("Speed:");
-    private JLabel labelTimes = new JLabel("Runtimes for test:");
-    
     public int getGameMode;
     public LobbyLogin ll;
     
@@ -77,14 +71,19 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         jtxDepth2.setToolTipText("P2 Depth");
         jtxSpeed.setToolTipText("Speed");
         jtxTimes.setToolTipText("Times");
-        
+
+        JButton jbtStart = new JButton("Start");
         jbtStart.addActionListener(this);
         jbtTest.addActionListener(this);
         jchDebug.addActionListener(this);
-        
+
+        JLabel labelDepth1 = new JLabel("P1 Depth:");
         labelDepth1.setForeground(Color.white);
+        JLabel labelDepth2 = new JLabel("P2 Depth:");
         labelDepth2.setForeground(Color.white);
+        JLabel labelSpeed = new JLabel("Speed:");
         labelSpeed.setForeground(Color.white);
+        JLabel labelTimes = new JLabel("Runtimes for test:");
         labelTimes.setForeground(Color.white);
         
         
@@ -116,9 +115,7 @@ public class SetupGameDialog extends JDialog implements ActionListener {
         jpnButtons.add(labelSpeed);
         jpnButtons.add(jtxSpeed);
         jpnButtons.add(jtxTimes);
-        
-        
-        
+
         p1Avatar = new JLabel("");
         p1Avatar.setVerticalAlignment(3);
         p1Avatar.setHorizontalAlignment(4);

@@ -23,10 +23,7 @@ public class Vector2D {
     }
     
     public Boolean equals(Vector2D v){
-        if(this.x == v.x && this.y == v.y)
-            return true;
-        else
-            return false;
+        return this.x == v.x && this.y == v.y;
     }
     
     public void add(Vector2D v){

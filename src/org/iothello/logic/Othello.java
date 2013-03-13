@@ -35,23 +35,19 @@ public class Othello {
     public void startOthello() throws IOException, InterruptedException {
         sgd.setVisible(true);        
         
-            if (sgd.getGameMode == 0) {
-                runGame();
-            }
-            if (sgd.getGameMode == 1) {
-                runNetGame();
-            }
-            if (sgd.getGameMode == 2) {
-                runTest();
-            }
-            //sgd.dispose();
-            //sgd = new SetupGameDialog(frame);
-            //sgd.setVisible(true);
-          
+        if (sgd.getGameMode == 0) {
+            runGame();
+        }
+        if (sgd.getGameMode == 1) {
+            runNetGame();
+        }
+        if (sgd.getGameMode == 2) {
+            runTest();
+        }
     }
 
-    /*
-     * Testläge som kör en ai mot en annan ai ett antal gånger. Räknar samman resultatet och redovisar det i en dialog.
+    /**
+     * Testmode, that runs an AI against another AI several times. Then summarize the result and presents it in a dialog.
      */
     private void testComp() {
         int times = sgd.getTimes();
@@ -79,7 +75,6 @@ public class Othello {
         for (int i = 0; i < times; i++) {
             jprBar.setValue(i);
             // TODO: Grid should probably be created in GameManager
-            //result = gm.gameplay(frame, true);
             result = gm.gameplay(frame, grid, true);
             if (result == 1) {
                 p1++;
@@ -91,9 +86,9 @@ public class Othello {
                 d++;
             }
         }
+
         jdlDialog.dispose();
         JOptionPane.showMessageDialog(null, "<html>" + sgd.getPlayer1().getName() + ": " + p1 / (times) * 100 + "% <br>" + sgd.getPlayer2().getName() + ": " + p2 / (times) * 100 + "% <br>Draw: " + d / (p1 + p2 + d) * 100 + "%", "Resultat", JOptionPane.INFORMATION_MESSAGE);
-
     }
 
     public void runGame() {
@@ -101,7 +96,6 @@ public class Othello {
         frame.setSpeed(sgd.getCompSpeed());
         frame.toFront();
         gm.gameplay(frame, grid, false);
-        //sgd.setVisible(true);
     }
 
     public void runNetGame() throws InterruptedException {
@@ -110,7 +104,7 @@ public class Othello {
         
         try {
             while (noGame) {
-                //väntar på att starta nätspel
+                // Wait on networkgame start
                 noGameCon.await();
             }
         } finally {
@@ -121,14 +115,9 @@ public class Othello {
         gm = new GameManager(sgd.ll.getPlayer1(), sgd.ll.getPlayer2());
         gm.gameplay(frame, grid, false);
 
-        // Utmanaren rapporterar resultat till server via gamelobby
-        // Om utmanaren disconnectat så rapporterar den utmanade
-        
+        /* Opponent reports the result to the server through the gamelobby. If opponent is disconnected, the other user reports. */
         sgd.ll.setStatus(0);
-        
-        
-        // eh, close connections and update score :)
-        
+
         if (sgd.ll.getPlayer1() instanceof NetPlayerLocal) {
             NetPlayerLocal p1 = (NetPlayerLocal)sgd.ll.getPlayer1();
             p1.closeConnection();

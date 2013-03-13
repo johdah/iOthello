@@ -19,19 +19,26 @@ public class MoveQueue {
     private static final Condition noMoveCon = lock.newCondition();
     private static GameFrame frame;
 
+    /**
+     *
+     * @param moves
+     * @return
+     * @throws InterruptedException
+     */
     public Point getMove(List<Point> moves) throws InterruptedException {
         while (true) {
             lock.lock();
             try {
                 while (noMove) {
-                    //väntar på input
+                    // Waiting for input
                     noMoveCon.await();
                 }
             } finally {
                 lock.unlock();
             }
             noMove = true;
-            //kollar om spelet är avslutat eller om draget är godkänt
+
+            // Check if game is over or the move is accepted.
             if (frame.endGame() || moves.contains(move)) {
                 break;
             }
@@ -39,8 +46,10 @@ public class MoveQueue {
         return move;
     }
     
-    /*
-     * Sätter draget och släpper lås-condition
+    /**
+     * Sets the move and releases the lock-condition
+     * @param x
+     * @param y
      */
     public void setMove(int x, int y) {
         lock.lock();
@@ -53,12 +62,16 @@ public class MoveQueue {
         }
     }
 
+    /**
+     *
+     * @param frame
+     */
     public void setFrame(GameFrame frame) {
         MoveQueue.frame = frame;
     }
     
-    /*
-     * Körs om man klickar på new game
+    /**
+     * Runs when clicking new game
      */
     public void releaseLock() {
         lock.lock();

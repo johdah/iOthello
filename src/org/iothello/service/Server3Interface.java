@@ -9,6 +9,7 @@ import java.util.List;
  * 
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
+@SuppressWarnings("UnusedDeclaration")
 public interface Server3Interface extends Remote {
     public User login(String name, String password, String IP, int port) throws RemoteException;
 

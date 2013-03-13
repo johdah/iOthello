@@ -8,11 +8,9 @@ import org.iothello.gui.GameFrame;
 import org.iothello.gui.dialogs.HelperDialog;
 import org.iothello.logic.players.Player;
 
-
 public class GameManager {
 	private Player playerOne; 
     private Player playerTwo;
-    private Player currentPlayer;
     private int turns = 0; // TODO: Should this exist?
 
 	public GameManager(Player playerOne, Player playerTwo) {
@@ -26,33 +24,30 @@ public class GameManager {
         //GameGrid gamegrid = new GameGrid();
         
         if (!testMode) {
-            frame.setEndGame(false); //återställer endgame
+            frame.setEndGame(false); //ï¿½terstï¿½ller endgame
         }
 
-        currentPlayer = playerTwo;
+        Player currentPlayer = playerTwo;
 
         List<Point> validMoves;
-        //While som rullar på tills spelet är slut.
+
+        // Gameloop
         while (true) {
-            // I edit mode så ska vi bara uppdatera brädet
+            // In edit mode, we should only update the board
             while(HelperDialog.getInstance().isStep() && !HelperDialog.getInstance().isNext()) {
-                 try {
+                try {
                     frame.updateBoard(gamegrid, currentPlayer.getID());
                 
                     Thread.sleep(100);
                 } catch (InterruptedException ex) {
                     Logger.getLogger(GameManager.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                 
             }
-            
-            //Byter spelare.
+
+            // Switching players
             if(frame.editPlayer == -1) {
-                if (currentPlayer == playerOne) {
-                    currentPlayer = playerTwo;
-                } else {
-                    currentPlayer = playerOne;
-                }
+                if (currentPlayer == playerOne) currentPlayer = playerTwo;
+                else currentPlayer = playerOne;
             } else {
                 if(frame.editPlayer == 0)
                     currentPlayer = playerOne;
@@ -61,43 +56,37 @@ public class GameManager {
                 
                 frame.editPlayer = -1;
             }
-            
-            //Räknar ut aktuell poängställning.
+
+            // Count the current points
             gamegrid.calculatePoints();
             playerOne.setPoints(gamegrid.getBlackPoints());
             playerTwo.setPoints(gamegrid.getWhitePoints());
 
-            //Om testmode(ai vs ai) är aktiverat görs inga grafiska uppdateringar
+            // If testmode is activated, no Draw is done
             if (!testMode) {
-                //uppdetara JLabels
                 frame.setFrameLabels(playerOne, playerTwo, currentPlayer);
             }
 
             validMoves = gamegrid.getValidMoves(currentPlayer.getID());
-            //Om testmode(ai vs ai) är aktiverat görs inga grafiska uppdateringar
+            // If testmode is activated, no Draw is done
             if (!testMode && currentPlayer.getValidMoves()) {
-                //uppdaterar brädet
                 frame.updateBoard(gamegrid, currentPlayer.getID());
             }
-            
-            //Kollar om aktuell spelare har några godkända drag och sätter bool efter det.
+
             if (validMoves.isEmpty()) {
                 currentPlayer.setValidMoves(false);
             } else {
                 currentPlayer.setValidMoves(true);
             }
             
-            //Om spelare har godkända drag så körs getMove på spelaren.
             if (currentPlayer.getValidMoves()) {
                 move.setLocation(currentPlayer.getMove(gamegrid));
             }
             
-            //Ser efter om Nytt spel knappen har tryckts(fram.endGame=true) och avbryter i sådana fall whileloopen och därmed aktuell spelsession.
             if (!testMode && frame.endGame()) {
-                break;//kollar om nytt spel knappen har trycks
+                break;
             }
 
-            //Om spelaren hade godkända drag så uppdateras gamegriden med det.
             if (currentPlayer.getValidMoves()) {
                 gamegrid.updateGrid(move.x, move.y, currentPlayer.getID());
             }
@@ -112,7 +101,6 @@ public class GameManager {
             }
             
             if(playerTwo.forfeited()) {
-                
                 // Punishment, half the score!
                 playerTwo.setPoints(playerTwo.getPoints() / 2);
                 
@@ -120,7 +108,7 @@ public class GameManager {
                 return playerOne.getID();
             }
 
-            //Om ingen av spelaren har godkända drag så är spelet slut. Beroende på poängställning visas olika dialoger.
+            // If no players has accepted moves the game is over. The dialog is choosen based on the result
             if (!playerOne.getValidMoves() && !playerTwo.getValidMoves()) {
                 if (playerOne.getPoints() > playerTwo.getPoints()) {
                     if (!testMode) {

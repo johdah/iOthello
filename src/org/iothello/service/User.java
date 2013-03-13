@@ -8,12 +8,13 @@ import java.util.List;
  * 
  * @author Johan Dahlberg <info@johandahlberg.com>
  */
+@SuppressWarnings("UnusedDeclaration")
 public class User implements Serializable {
 	private static final long serialVersionUID = 2430471622661962697L;
 	private String name;
     private String IP;
     private int port;
-    private List<String> privatechat = new ArrayList<String>();
+    private List<String> privateChat = new ArrayList<>();
     private User challenger = null;
     private int playerStatus = 0;
 
@@ -24,7 +25,6 @@ public class User implements Serializable {
     public void setPort(int port) {
         this.port = port;
     }
-
 
     public void setChallenger(User challenger) {
         this.challenger = challenger;
@@ -58,21 +58,19 @@ public class User implements Serializable {
     }
 
     public void addPrivateMess(String from, String mess) {
-        privatechat.add(from + ": " + mess);
+        privateChat.add(from + ": " + mess);
     }
 
     public List<String> getMessSince(int since) {
         List<String> returnlist = new ArrayList<String>();
-        for (int i = since; i < privatechat.size(); i++) {
-            returnlist.add(privatechat.get(i));
+        for (int i = since; i < privateChat.size(); i++) {
+            returnlist.add(privateChat.get(i));
         }
         return returnlist;
     }
 
     void clearMessages() {
-        privatechat.clear();
-
-
+        privateChat.clear();
     }
 
     @Override
